@@ -18,12 +18,6 @@ def generate_launch_description():
         "xacro ", urdf_path
     ])
 
-    gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory("gazebo_ros"), "launch", "gazebo.launch.py")
-        )
-    )
-
     spawn_entity = Node(
         package="gazebo_ros",
         executable="spawn_entity.py",
@@ -38,7 +32,6 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "use_sim_time", default_value="true", description="Use simulation time"
         ),
-        gazebo,
         Node(
             package="robot_state_publisher",
             executable="robot_state_publisher",
