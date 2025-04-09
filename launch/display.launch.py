@@ -7,7 +7,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, PathJoinSubstitution
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('rahcm')
+    pkg_share = get_package_share_directory('laser_rahcm_visualization')
     urdf_file = PathJoinSubstitution([pkg_share, 'urdf', 'rahcm.urdf.xacro'])
     rviz_config_file = PathJoinSubstitution([pkg_share, 'config', 'default.rviz'])
 

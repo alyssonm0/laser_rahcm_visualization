@@ -8,7 +8,7 @@ from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitut
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    package_name = "rahcm"
+    package_name = "laser_rahcm_visualization"
     urdf_file_name = "rahcm.urdf.xacro"
 
     package_path = get_package_share_directory(package_name)
@@ -27,7 +27,7 @@ def generate_launch_description():
     spawn_entity = Node(
         package="gazebo_ros",
         executable="spawn_entity.py",
-        arguments=["-entity", "rahcm", "-topic", "/robot_description"],
+        arguments=["-entity", "laser_rahcm_visualization", "-topic", "/robot_description"],
         output="screen",
     )
 
