@@ -3,7 +3,7 @@
   <name>laser_rahcm_visualization</name>
   <version>0.0.0</version>
   <description>Pacote de visualização do robô Chico Mendes no ROS 2</description>
-  <maintainer email="seu_email@example.com">Seu Nome</maintainer>
+  <maintainer email="seu_email@example.com">Alysson Martim</maintainer>
   <license>Apache-2.0</license>
 
   <!-- Ferramenta de build -->

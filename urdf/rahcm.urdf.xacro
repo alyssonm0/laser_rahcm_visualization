@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="rahcm" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="laser_rahcm_visualization" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- Importa os módulos -->
   <xacro:include filename="base.urdf.xacro"/>
