@@ -8,8 +8,8 @@ from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitut
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    package_name = "chico"
-    urdf_file_name = "chico_basic.urdf.xacro"
+    package_name = "rahcm"
+    urdf_file_name = "rahcm.urdf.xacro"
 
     package_path = get_package_share_directory(package_name)
     urdf_path = os.path.join(package_path, "urdf", urdf_file_name)
@@ -27,7 +27,7 @@ def generate_launch_description():
     spawn_entity = Node(
         package="gazebo_ros",
         executable="spawn_entity.py",
-        arguments=["-entity", "chico", "-topic", "/robot_description"],
+        arguments=["-entity", "rahcm", "-topic", "/robot_description"],
         output="screen",
     )
 
@@ -55,5 +55,4 @@ def generate_launch_description():
             name='joint_state_publisher_gui',
             output='screen'
         )
-
     ])

@@ -5,11 +5,10 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import Command, PathJoinSubstitution
-from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('chico')
-    urdf_file = PathJoinSubstitution([pkg_share, 'urdf', 'chico_basic.urdf.xacro'])
+    pkg_share = get_package_share_directory('rahcm')
+    urdf_file = PathJoinSubstitution([pkg_share, 'urdf', 'rahcm.urdf.xacro'])
     rviz_config_file = PathJoinSubstitution([pkg_share, 'config', 'default.rviz'])
 
     return LaunchDescription([
@@ -46,6 +45,5 @@ def generate_launch_description():
             name='joint_state_publisher_gui',
             output='screen'
         )
-
 
     ])
