@@ -28,7 +28,7 @@
       </inertial>
     </link>
 
-    <joint name="joint_${name}" type="revolute">
+    <joint name="joint_${name}" type="continuous">
       <parent link="${parent}"/>
       <child link="${name}"/>
       <origin xyz="${xyz}" rpy="${rpy}"/>
