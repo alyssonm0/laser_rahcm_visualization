@@ -19,14 +19,20 @@ def generate_launch_description():
     ])
 
     spawn_entity = Node(
-        package="gazebo_ros",
-        executable="spawn_entity.py",
-        arguments=["-entity",
-                    "laser_rahcm_visualization",
-                    "-topic",
-                    "/robot_description"],
-        output="screen",
-    )
+    package="gazebo_ros",
+    executable="spawn_entity.py",
+    output="screen",
+    arguments=[
+        "-entity", "laser_rahcm_visualization",
+        "-topic", "/robot_description",
+        "-x", "-19.0",
+        "-y", "-5.0",
+        "-z", "0.5",
+        "-R", "0",
+        "-P", "0",
+        "-Y", "1.5708",
+    ]
+)
 
     return LaunchDescription([
         DeclareLaunchArgument(
