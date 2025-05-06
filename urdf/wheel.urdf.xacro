@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!-- Roda do robô -->
+  <!-- Roda do robô  -->
   <xacro:macro name="wheel" params="name parent xyz rpy">
+    
+    <!-- Link da roda -->
     <link name="${name}">
       <visual>
         <geometry>
-          <sphere radius="0.3"/>
+          <mesh filename="package://laser_rahcm_visualization/meshes/wheel.stl" scale="0.01 0.01 0.01"/>
         </geometry>
-        <material name="black"/>
+        <material name="gray"/>
       </visual>
 
       <collision>
         <geometry>
-          <sphere radius="0.3"/>
+          <cylinder radius="0.3" length="0.3"/>
         </geometry>
       </collision>
 
@@ -21,23 +23,22 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <mass value="10"/>
         <inertia
-          ixx="${(2/5) * 10.0 * (0.3*0.3)}"
-          iyy="${(2/5) * 10.0 * (0.3*0.3)}"
-          izz="${(2/5) * 10.0 * (0.3*0.3)}"
+          ixx="${(1.0/12.0) * 10.0 * (3*(0.3*0.3) + 0.3*0.3)}"
+          iyy="${(1.0/12.0) * 10.0 * (3*(0.3*0.3) + 0.3*0.3)}"
+          izz="${(1.0/2.0) * 10.0 * (0.3*0.3)}"
           ixy="0.0" ixz="0.0" iyz="0.0"/>
       </inertial>
     </link>
 
     <joint name="joint_${name}" type="continuous">
       <parent link="${parent}"/>
-      <child link="${name}"/>
+      <child  link="${name}"/>
       <origin xyz="${xyz}" rpy="${rpy}"/>
-      <axis xyz="1 0 0"/>
-      <limit effort="5.0" velocity="10.0"/>
+      <axis  xyz="0 0 1"/>
+      <limit  effort="5.0" velocity="10.0"/>
       <dynamics damping="0.1" friction="0.1"/>
-
-
     </joint>
+
   </xacro:macro>
 
 </robot>

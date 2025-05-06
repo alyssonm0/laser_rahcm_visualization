@@ -70,8 +70,6 @@ def generate_launch_description():
     package_name = "laser_rahcm_visualization"
     pkg_share = get_package_share_directory(package_name)
     meshes_dir = PathJoinSubstitution([pkg_share, 'meshes'])
-
-def generate_launch_description():
     return LaunchDescription([
         SetEnvironmentVariable(
             name='GAZEBO_MODEL_PATH',

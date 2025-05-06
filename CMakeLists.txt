@@ -22,5 +22,8 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
-# Garante que todas as dependências sejam encontradas e configuradas corretamente
+install(
+  DIRECTORY meshes
+  DESTINATION share/${PROJECT_NAME}
+)
 ament_package()
