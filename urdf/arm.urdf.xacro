@@ -5,8 +5,9 @@
    <xacro:macro name="arm" params="name parent xyz rpy">
     <link name="${name}">
       <visual>
+        <origin xyz="0 0 -0.5" rpy="0 -0.4 0"/>
         <geometry>
-          <cylinder length="1.1" radius="0.1"/>
+          <mesh filename="package://laser_rahcm_visualization/meshes/arm.stl" scale="0.018 0.018 0.018"/>
         </geometry>
         <material name="gray"/>
       </visual>

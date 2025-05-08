@@ -7,6 +7,7 @@
     <!-- Link da roda -->
     <link name="${name}">
       <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://laser_rahcm_visualization/meshes/wheel.dae" scale="0.01 0.01 0.01"/>
         </geometry>

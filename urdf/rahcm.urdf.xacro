@@ -18,12 +18,12 @@
   <!-- Corpo principal -->
   <xacro:base name="base"/>
   <!-- Braços e Rodas -->
-  <xacro:arm name="arm_front_left" parent="base_link" xyz="-0.65 0.45 -0.3" rpy="0 0.6 0"/>
-  <xacro:joint_arm name="joint_arm_front_left" parent="arm_front_left" xyz="0 0 -0.5" rpy="0 1 0"/>
+  <xacro:arm name="arm_front_left" parent="base_link" xyz="-0.65 0.45 -0.3" rpy="0 -0.6 3.14"/>
+  <xacro:joint_arm name="joint_arm_front_left" parent="arm_front_left" xyz="0 0 -0.5" rpy="0 -1 0"/>
   <xacro:wheel name="wheel_front_left" parent="joint_arm_front_left" xyz="0 0 -0.25" rpy="0 0 0"/>
   
-  <xacro:arm name="arm_front_right" parent="base_link" xyz="-0.65 -0.45 -0.3" rpy="0 0.6 0"/>
-  <xacro:joint_arm name="joint_arm_front_right" parent="arm_front_right" xyz="0 0 -0.5" rpy="0 1 0"/>
+  <xacro:arm name="arm_front_right" parent="base_link" xyz="-0.65 -0.45 -0.3" rpy="0 -0.6 3.14"/>
+  <xacro:joint_arm name="joint_arm_front_right" parent="arm_front_right" xyz="0 0 -0.5" rpy="0 -1 0"/>
   <xacro:wheel name="wheel_front_right" parent="joint_arm_front_right" xyz="0 0 -0.25" rpy="0 0 0"/>
 
   <xacro:arm name="arm_rear_left" parent="base_link" xyz="0.65 0.45 -0.3" rpy="0 -0.6 0"/>
