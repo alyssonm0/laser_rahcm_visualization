@@ -5,25 +5,26 @@
   <xacro:macro name="base" params="name">
     <link name="base_link">
       <visual>
+      <origin xyz="0 0 -0.5" rpy="0 0 0"/>
         <geometry>
-          <box size="0.8 1.5 0.6"/>
+          <mesh filename="package://laser_rahcm_visualization/meshes/chassi.dae" scale="0.0113 0.011 0.0125"/>
         </geometry>
-        <material name="gray"/>
+        <material name="white"/>
       </visual>
 
       <collision>
         <geometry>
-          <box size="0.8 1.5 0.6"/>
+          <box size="0.8 1.1 0.6"/>
         </geometry>
       </collision>
       
       <inertial>
-        <origin xyz="0 0 0.3" rpy="0 0 0"/>
-        <mass value="60"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="50"/>
         <inertia
-          ixx="${1.5/12.0 * 60.0 * (0.8*0.8 + 0.6*0.6)}"    
-          iyy="${1.5/12.0 * 60.0 * (1.5*1.5 + 0.6*0.6)}"
-          izz="${1.5/12.0 * 60.0 * (0.8*0.8 + 1.5*1.5)}"
+          ixx="${1.1/12.0 * 50.0 * (0.8*0.8 + 0.6*0.6)}"    
+          iyy="${1.1/12.0 * 50.0 * (1.1*1.1 + 0.6*0.6)}"
+          izz="${1.1/12.0 * 50.0 * (0.8*0.8 + 1.1*1.1)}"
           ixy="0.0" ixz="0.0" iyz="0.0"/>
       </inertial>
     </link>

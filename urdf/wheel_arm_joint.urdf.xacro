@@ -6,14 +6,14 @@
     <link name="${name}">
       <visual>
         <geometry>
-          <cylinder length="0.25" radius="0.1"/>
+          <cylinder length="0.23" radius="0.04"/>
         </geometry>
         <material name="gray"/>
       </visual>
       
       <collision>
         <geometry>
-          <cylinder length="0.25" radius="0.1"/>
+          <cylinder length="0.23" radius="0.04"/>
         </geometry>
       </collision>
       
@@ -21,9 +21,9 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <mass value="2.0"/>
         <inertia
-          ixx="${(1.0/12.0) * 2.0 * (3*(0.1*0.1) + 0.2*0.2)}"
-          iyy="${(1.0/12.0) * 2.0 * (3*(0.1*0.1) + 0.2*0.2)}"
-          izz="${(1.0/2.0) * 2.0 * (0.1*0.1)}"
+          ixx="${(1.0/12.0) * 2.0 * (3*(0.04*0.04) + 0.23*0.23)}"
+          iyy="${(1.0/12.0) * 2.0 * (3*(0.04*0.04) + 0.23*0.23)}"
+          izz="${(1.0/2.0) * 2.0 * (0.04*0.04)}"
           ixy="0.0" ixz="0.0" iyz="0.0"/>
       </inertial>
     </link>

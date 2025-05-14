@@ -5,26 +5,26 @@
    <xacro:macro name="arm" params="name parent xyz rpy">
     <link name="${name}">
       <visual>
-        <origin xyz="0 0 -0.5" rpy="0 -0.4 0"/>
+        <origin xyz="0 0 -0.3" rpy="0 -0.4 0"/> 
         <geometry>
-          <mesh filename="package://laser_rahcm_visualization/meshes/arm.stl" scale="0.018 0.018 0.018"/>
+          <mesh filename="package://laser_rahcm_visualization/meshes/arm.stl" scale="0.01 0.01 0.011"/>
         </geometry>
-        <material name="gray"/>
+        <material name="green"/>
       </visual>
       
       <collision>
         <geometry>
-          <cylinder length="1.1" radius="0.1"/>
+          <cylinder length="0.55" radius="0.05"/>
         </geometry>
       </collision>
       
       <inertial>
-        <origin xyz="0 0 0.55" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <mass value="12.5"/>
         <inertia
-          ixx="${(1.0/12.0) * 12.5 * (3*(0.1*0.1) + 1.1*1.1)}"
-          iyy="${(1.0/12.0) * 12.5 * (3*(0.1*0.1) + 1.1*1.1)}"
-          izz="${(1.0/2.0) * 12.5 * (0.1*0.1)}"
+          ixx="${(1.0/12.0) * 12.5 * (3*(0.05*0.05) + 0.55*0.55)}"
+          iyy="${(1.0/12.0) * 12.5 * (3*(0.05*0.05) + 0.55*0.55)}"
+          izz="${(1.0/2.0) * 12.5 * (0.05*0.05)}"
           ixy="0.0" ixz="0.0" iyz="0.0"/>
       </inertial>
     </link>
