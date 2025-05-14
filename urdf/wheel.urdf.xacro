@@ -40,6 +40,41 @@
       <dynamics damping="0.1" friction="0.1"/>
     </joint>
 
+    <gazebo>
+      <plugin name="usv_dynamics_plugin" filename="libusv_gazebo_dynamics_plugin.so">
+        <bodyName bodyName="${name}"/>
+        <!-- Must be same as the ocean model!-->
+        <waterLevel>0.65</waterLevel>
+        <waterDensity>997.8</waterDensity>
+        <!-- Added mass -->
+        <xDotU>0.0</xDotU>
+        <yDotV>0.0</yDotV>
+        <nDotR>0.0</nDotR>
+
+        <!-- Linear and quadratic drag -->
+        <xU>0.0057</xU>            
+        <xUU>116.0</xUU>  
+        <yV>0.0057</yV>    
+        <yVV>116.0</yVV>   
+        <zW>116.0</zW>             
+        <kP>10.0</kP>
+        <mQ>10.0</mQ>
+        <nR>10.0</nR>
+        <nRR>0.0</nRR>
+
+        <!-- General dimensions -->
+        <hullRadius>0.3</hullRadius>
+        <boatWidth>0.55</boatWidth>
+        <boatLength>0.6</boatLength>
+
+        <!-- Length discretization, AKA, "N" -->
+        <length_n>1</length_n>
+
+        <!-- Wave model -->
+        <wave_model>waves</wave_model>
+      </plugin>
+    </gazebo>    
+
   </xacro:macro>
 
 </robot>

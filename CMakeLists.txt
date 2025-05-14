@@ -9,6 +9,7 @@ find_package(xacro REQUIRED)
 find_package(robot_state_publisher REQUIRED)
 find_package(rviz2 REQUIRED)
 find_package(gazebo_ros REQUIRED)
+find_package(laser_rahcm_simulation REQUIRED)
 
 # Instalação do arquivo URDF
 install(
