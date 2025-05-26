@@ -5,6 +5,7 @@
    <xacro:macro name="joint_arm" params="name parent xyz rpy">
     <link name="${name}">
       <visual>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
         <geometry>
           <cylinder length="0.23" radius="0.04"/>
         </geometry>
@@ -12,26 +13,30 @@
       </visual>
       
       <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.23" radius="0.04"/>
         </geometry>
       </collision>
       
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <mass value="2.0"/>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
+        <mass value="1.0"/>
         <inertia
-          ixx="${(1.0/12.0) * 2.0 * (3*(0.04*0.04) + 0.23*0.23)}"
-          iyy="${(1.0/12.0) * 2.0 * (3*(0.04*0.04) + 0.23*0.23)}"
-          izz="${(1.0/2.0) * 2.0 * (0.04*0.04)}"
+          ixx="${(1.0/12.0) * 1.0 * (3*(0.04*0.04) + 0.23*0.23)}"
+          iyy="${(1.0/12.0) * 1.0 * (3*(0.04*0.04) + 0.23*0.23)}"
+          izz="${(1.0/2.0) * 1.0 * (0.04*0.04)}"
           ixy="0.0" ixz="0.0" iyz="0.0"/>
       </inertial>
     </link>
 
-    <joint name="joint_${name}" type="fixed">
+    <joint name="joint_${name}" type="revolute">
       <parent link="${parent}"/>
       <child link="${name}"/>
       <origin xyz="${xyz}" rpy="${rpy}"/>
+      <axis xyz="0 0 0"/>
+      <limit effort="10.0" velocity="1.0" lower="0" upper="0"/>
+      <dynamics damping="5.0" friction="5.0"/>
     </joint>
   </xacro:macro>
 

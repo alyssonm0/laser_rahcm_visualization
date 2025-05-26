@@ -7,26 +7,27 @@
     <!-- Link da roda -->
     <link name="${name}">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
         <geometry>
-          <mesh filename="package://laser_rahcm_visualization/meshes/wheel.dae" scale="0.01 0.01 0.013"/>
+          <mesh filename="package://laser_rahcm_visualization/meshes/wheel.dae" scale="0.008 0.009 0.013"/>
         </geometry>
         <material name="gray"/>
       </visual>
 
       <collision>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
         <geometry>
-          <cylinder radius="0.3" length="0.55"/>
+          <cylinder radius="0.3" length="0.63"/>
         </geometry>
       </collision>
 
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <mass value="12.5"/>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
+        <mass value="3.0"/>
         <inertia
-          ixx="${(1.0/12.0) * 12.5 * (3*(0.3*0.3) + 0.55*0.55)}"
-          iyy="${(1.0/12.0) * 12.5 * (3*(0.3*0.3) + 0.55*0.55)}"
-          izz="${(1.0/2.0) * 12.5 * (0.3*0.3)}"
+          ixx="${(1.0/12.0) * 3.0 * (3*((0.3*0.3)) + 0.63*0.63)}"
+          iyy="${(1.0/2.0) * 3.0 * (0.3*0.3)}"
+          izz="${(1.0/12.0) * 3.0 * (3*((0.3*0.3)) + 0.63*0.63)}"
           ixy="0.0" ixz="0.0" iyz="0.0"/>
       </inertial>
     </link>
@@ -35,7 +36,7 @@
       <parent link="${parent}"/>
       <child  link="${name}"/>
       <origin xyz="${xyz}" rpy="${rpy}"/>
-      <axis  xyz="0 0 1"/>
+      <axis  xyz="1 0 0"/>
       <limit  effort="5.0" velocity="10.0"/>
       <dynamics damping="0.1" friction="0.1"/>
     </joint>
