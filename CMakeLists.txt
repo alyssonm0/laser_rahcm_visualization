@@ -22,32 +22,52 @@ find_package(gazebo REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
 include_directories(
   include
-  ${Boost_INCLUDE_DIRS}
-  ${Eigen3_INCLUDE_DIRS}
   ${GAZEBO_INCLUDE_DIRS}
-  ${std_msgs_INCLUDE_DIRS}
   ${rclcpp_INCLUDE_DIRS}
-  ${sensor_msgs_INCLUDE_DIRS}
 )
 
-add_library(usv_gazebo_thrust_plugin 
+# add_executable(thrust
+#   src/usv_gazebo_thrust_plugin.cc
+# )
+
+# ament_target_dependencies(thrust
+#   rclcpp
+#   std_msgs
+#   gazebo
+#   gazebo_ros
+#   sensor_msgs
+#   Boost
+#   Eigen3
+# )
+
+link_directories(${GAZEBO_LIBRARY_DIRS})
+
+add_library(usv_gazebo_thrust_plugin SHARED
   src/usv_gazebo_thrust_plugin.cc
 )
 
-target_link_libraries(usv_gazebo_thrust_plugin
-  ${Boost_LIBRARIES}
-  ${Eigen3_LIBRARIES}
-  ${GAZEBO_LIBRARIES}
-  ${std_msgs_LIBRARIES}
-  ${rclcpp_LIBRARIES}
-  ${sensor_msgs_LIBRARIES}
+ament_target_dependencies(usv_gazebo_thrust_plugin
+  rclcpp
+  gazebo_ros
+  std_msgs
+  sensor_msgs
+  Boost
+  Eigen3
 )
-target_compile_options(usv_gazebo_thrust_plugin PRIVATE "-Wno-unknown-pragmas")
+
+target_link_libraries(usv_gazebo_thrust_plugin
+  ${GAZEBO_LIBRARIES}
+  ${rclcpp_LIBRARIES}
+)
+
+# install(TARGETS
+#   thrust
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 install(TARGETS usv_gazebo_thrust_plugin
   ARCHIVE DESTINATION lib
@@ -62,8 +82,28 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}
 )
 
-ament_export_include_directories(include)
-ament_export_libraries(usv_gazebo_thrust_plugin)
-ament_export_dependencies(gazebo rclcpp std_msgs Eigen3 Boost sensor_msgs)
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}
+  FILES_MATCHING PATTERN "*.hh"
+  PATTERN "*~" EXCLUDE
+)
+
+install(DIRECTORY include/
+  DESTINATION include
+  FILES_MATCHING PATTERN "*.hh"
+)
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/
+  DESTINATION include
+  FILES_MATCHING PATTERN "*.pb.*"
+  PATTERN "*~" EXCLUDE
+)
+
+if(build_testing)
+  find_package(ament_lint_auto required)
+  set(ament_cmake_copyright_found true)
+  set(ament_cmake_cpplint_found true)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
 ament_package()

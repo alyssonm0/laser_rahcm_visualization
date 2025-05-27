@@ -7,26 +7,27 @@
     <!-- Link da roda -->
     <link name="${name}">
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
         <geometry>
-          <mesh filename="package://laser_rahcm_visualization/meshes/wheel.dae" scale="0.01 0.01 0.013"/>
+          <mesh filename="package://laser_rahcm_visualization/meshes/wheel.dae" scale="0.008 0.009 0.013"/>
         </geometry>
         <material name="gray"/>
       </visual>
 
       <collision>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
         <geometry>
-          <cylinder radius="0.3" length="0.55"/>
+          <cylinder radius="0.3" length="0.63"/>
         </geometry>
       </collision>
 
       <inertial>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0" rpy="0 1.57 0"/>
         <mass value="12.5"/>
         <inertia
-          ixx="${(1.0/12.0) * 12.5 * (3*(0.3*0.3) + 0.55*0.55)}"
-          iyy="${(1.0/12.0) * 12.5 * (3*(0.3*0.3) + 0.55*0.55)}"
-          izz="${(1.0/2.0) * 12.5 * (0.3*0.3)}"
+          ixx="${(1.0/12.0) * 3.0 * (3*((0.3*0.3)) + 0.63*0.63)}"
+          iyy="${(1.0/2.0) * 3.0 * (0.3*0.3)}"
+          izz="${(1.0/12.0) * 3.0 * (3*((0.3*0.3)) + 0.63*0.63)}"
           ixy="0.0" ixz="0.0" iyz="0.0"/>
       </inertial>
     </link>
@@ -35,7 +36,7 @@
       <parent link="${parent}"/>
       <child  link="${name}"/>
       <origin xyz="${xyz}" rpy="${rpy}"/>
-      <axis  xyz="0 0 1"/>
+      <axis  xyz="1 0 0"/>
       <limit  effort="5.0" velocity="10.0"/>
       <dynamics damping="0.1" friction="0.1"/>
     </joint>
@@ -44,10 +45,10 @@
       <plugin name="usv_dynamics_plugin" filename="libusv_gazebo_dynamics_plugin.so">
         <bodyName bodyName="${name}"/>
         <!-- Must be same as the ocean model!-->
-        <waterLevel>0.65</waterLevel>
+        <waterLevel>0.9</waterLevel>
         <waterDensity>997.8</waterDensity>
         <!-- Added mass -->
-        <xDotU>0.0</xDotU>
+        <xDotU>0.0</xDotU> 
         <yDotV>0.0</yDotV>
         <nDotR>0.0</nDotR>
 
@@ -57,9 +58,9 @@
         <yV>0.0057</yV>    
         <yVV>116.0</yVV>   
         <zW>116.0</zW>             
-        <kP>10.0</kP>
-        <mQ>10.0</mQ>
-        <nR>10.0</nR>
+        <kP>100.0</kP>
+        <mQ>100.0</mQ>
+        <nR>100.0</nR>
         <nRR>0.0</nRR>
 
         <!-- General dimensions -->

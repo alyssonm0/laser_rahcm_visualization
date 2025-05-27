@@ -58,7 +58,7 @@ def launch_setup(context, *args, **kwargs):
         arguments=[
             "-entity", package_name,
             "-topic", "/robot_description",
-            "-x", "-19.0", "-y", "-5.0", "-z", "0.5",
+            "-x", "0.0", "-y", "0.0", "-z", "0.5",
             "-R", "0", "-P", "0", "-Y", "1.5708",
         ],
     ))
@@ -79,6 +79,11 @@ def generate_launch_description():
                 meshes_dir
             ]
         ),
+        # Node(
+        #     package='laser_rahcm_visualization',
+        #     executable='node',
+        #     name='node'
+        # ),
         DeclareLaunchArgument("use_sim_time", default_value="true", description="Use simulation time"),
         OpaqueFunction(function=launch_setup)
     ])

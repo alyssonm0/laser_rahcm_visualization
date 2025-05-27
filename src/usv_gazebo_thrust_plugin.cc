@@ -79,6 +79,7 @@ double UsvThrust::SdfParamDouble(sdf::ElementPtr _sdfPtr,
 //////////////////////////////////////////////////
 void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 {
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "Loading plugin...");
   this->model = _parent;
   this->world = this->model->GetWorld();
 
@@ -87,13 +88,16 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   if (_sdf->HasElement("robotNamespace"))
   {
     nodeNamespace = _sdf->Get<std::string>("robotNamespace") + "/";
+    RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "robotNamespace: " << nodeNamespace);
   }
 
   this->cmdTimeout = this->SdfParamDouble(_sdf, "cmdTimeout", 1.0);
-
+ 
   // Parse joint publisher update rate
   this->publisherRate = this->SdfParamDouble(_sdf, "publisherRate", 100.0);
 
+
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Loading Thrusters from SDF...");
 
   // For each thruster
   int thrusterCounter = 0;
@@ -105,7 +109,8 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
       // Instatiate
       Thruster thruster(this);
 
-
+      
+      RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Thruster " << thrusterCounter);
       // REQUIRED PARAMETERS
       // Find link by name in SDF
       if (thrusterSDF->HasElement("linkName"))
@@ -114,13 +119,16 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
         thruster.link = this->model->GetLink(linkName);
         if (!thruster.link)
         {
+          RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "Could not find a link by the name <" + linkName + "> in the model!");
         }
         else
         {
+          RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Thruster added to link <" + linkName + ">");
         }
       }
       else
       {
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "Please specify a link name for each thruster!");
       }
 
       // Parse out propellor joint name
@@ -130,14 +138,17 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
           thrusterSDF->GetElement("propJointName")->Get<std::string>();
         thruster.propJoint = this->model->GetJoint(propName);
         if (!thruster.propJoint)
-        {
+        {  
+          RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "Could not find a propellor joint by the name of <" + propName + "> in the model");
         }
         else
-        {
+        { 
+          RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Propellor joint <" + propName + "> added to thruster");
         }
       }
       else
       {
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "No propJointName SDF parameter for thrust " + thrusterCounter);
       }
 
       // Parse out engine joint name
@@ -148,13 +159,16 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
         thruster.engineJoint = this->model->GetJoint(engineName);
         if (!thruster.engineJoint)
         {
+          RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "Could not find an engine joint by the name of <" + engineName + "> in the model");
         }
         else
-        {
+        { 
+          RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Engine joint <" + engineName + "> added to thruster");
         }
       }
       else
       {
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "No engineJointName SDF parameter for thrust " + thrusterCounter);
       }
 
       // Parse for cmd subscription topic
@@ -164,6 +178,7 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
       }
       else
       {
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "Please specify a cmdTopic for thruster" + thrusterCounter);
       }
 
       // Parse for angle subscription topic
@@ -173,8 +188,8 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
       }
       else
       {
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "Please specify a angleTopic for thruster" + thrusterCounter);
       }
-
 
       // Parse for enableAngle bool
       if (thrusterSDF->HasElement("enableAngle"))
@@ -183,6 +198,7 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
       }
       else
       {
+        RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "Please specify if it should enable angle adjustment for thruster" + thrusterCounter);
       }
 
       // OPTIONAL PARAMETERS
@@ -190,10 +206,12 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
       if (thrusterSDF->HasElement("mappingType"))
       {
         thruster.mappingType = thrusterSDF->Get<int>("mappingType");
+        RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Parameter found - setting <mappingType> to <" << thruster.mappingType << ">.");
       }
       else
       {
         thruster.mappingType = 0;
+        RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Parameter not found - setting <mappingType> to <" << thruster.mappingType << ">.");
       }
 
       thruster.maxCmd = this->SdfParamDouble(thrusterSDF, "maxCmd", 1.0);
@@ -212,11 +230,21 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   }
   else
   {
+    RCLCPP_ERROR_STREAM(rclcpp::get_logger("thurst"), "No 'thruster' tags in description");
   }
 
-  // Initialize the ROS node and subscribe to cmd_drive
-  node = std::make_shared<rclcpp::Node>("node", nodeNamespace);
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("thurst"), "Found " << thrusterCounter << " thrusters");
 
+  // Initialize the ROS node and subscribe to cmd_drive
+  if (!rclcpp::ok())
+  {
+    rclcpp::init(0, nullptr);
+  } 
+
+  this->node = std::make_shared<rclcpp::Node>("thrust"); 
+
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "Node Created!");
+  
   #if GAZEBO_MAJOR_VERSION >= 8
     this->prevUpdateTime = this->world->SimTime();
   #else
@@ -226,33 +254,37 @@ void UsvThrust::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
   // Advertise joint state publisher to view engines and propellers in rviz
   // TODO: consider throttling joint_state pub for performance
   // (every OnUpdate may be too frequent).
+
   this->jointStatePub = this->node->create_publisher<sensor_msgs::msg::JointState>("joint_states", 1);
   this->jointStateMsg.name.resize(2 * thrusters.size());
   this->jointStateMsg.position.resize(2 * thrusters.size());
   this->jointStateMsg.velocity.resize(2 * thrusters.size());
   this->jointStateMsg.effort.resize(2 * thrusters.size());
 
+  RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "JointStatePub created!");
+
   for (size_t i = 0; i < this->thrusters.size(); ++i)
   {
     // Prefill the joint state message with the engine and propeller joint.
-    this->jointStateMsg.name[2 * i] = this->thrusters[i].engineJoint->GetName();
-    this->jointStateMsg.name[2 * i + 1] =
-      this->thrusters[i].propJoint->GetName();
-
+    /* this->jointStateMsg.name[2 * i] = this->thrusters[i].engineJoint->GetName(); */
+    this->jointStateMsg.name[2 * i + 1] = this->thrusters[i].propJoint->GetName(); 
+  
     // Subscribe to commands for each thruster.
     this->thrusters[i].cmdSub = this->node->create_subscription<std_msgs::msg::Float32>(
       this->thrusters[i].cmdTopic, 1, std::bind(&Thruster::OnThrustCmd, &this->thrusters[i],std::placeholders::_1));
 
     // Subscribe to angles for each thruster.
-    if (this->thrusters[i].enableAngle)
-    {
-       this->thrusters[i].angleSub = this->node->create_subscription<std_msgs::msg::Float32>(
-        this->thrusters[i].angleTopic, 1, std::bind(&Thruster::OnThrustAngle, &this->thrusters[i],std::placeholders::_1));
-    }
+    /* if (this->thrusters[i].enableAngle) */
+    /* { */
+    /*    this->thrusters[i].angleSub = this->node->create_subscription<std_msgs::msg::Float32>( */
+    /*     this->thrusters[i].angleTopic, 1, std::bind(&Thruster::OnThrustAngle, &this->thrusters[i],std::placeholders::_1)); */
+    /* } */
   }
 
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
     std::bind(&UsvThrust::Update, this));
+
+  /* RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "Update called..."); */
 }
 
 //////////////////////////////////////////////////
@@ -303,11 +335,15 @@ double UsvThrust::GlfThrustCmd(const double _cmd,
 //////////////////////////////////////////////////
 void UsvThrust::Update()
 {
+  /* RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "Uptating..."); */
+ 
   #if GAZEBO_MAJOR_VERSION >= 8
     common::Time now = this->world->SimTime();
   #else
     common::Time now = this->world->GetSimTime();
   #endif
+  
+  rclcpp::spin_some(this->node);
 
   for (size_t i = 0; i < this->thrusters.size(); ++i)
   {
@@ -321,24 +357,30 @@ void UsvThrust::Update()
       }
 
       // Adjust thruster engine joint angle with PID
-      this->RotateEngine(i, now - this->thrusters[i].lastAngleUpdateTime);
+      /* this->RotateEngine(i, now - this->thrusters[i].lastAngleUpdateTime); */
 
       // Apply the thrust mapping
       ignition::math::Vector3d tforcev(0, 0, 0);
       switch (this->thrusters[i].mappingType)
       {
         case 0:
-          tforcev.X() = this->ScaleThrustCmd(this->thrusters[i].currCmd/
+          tforcev.Y() = this->ScaleThrustCmd(this->thrusters[i].currCmd/
                                             this->thrusters[i].maxCmd,
                                             this->thrusters[i].maxCmd,
                                             this->thrusters[i].maxForceFwd,
                                             this->thrusters[i].maxForceRev);
+
+          /* /1* RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "tforcev.X() = " << tforcev.X() << " | " << *1/ */
+          /*                                                  "tforcev.Y() = " << tforcev.Y() << std::endl); */
           break;
         case 1:
-          tforcev.X() = this->GlfThrustCmd(this->thrusters[i].currCmd/
+          tforcev.Y() = this->GlfThrustCmd(this->thrusters[i].currCmd/
                                           this->thrusters[i].maxCmd,
                                           this->thrusters[i].maxForceFwd,
                                           this->thrusters[i].maxForceRev);
+          
+          /* RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "tforcev.X() = " << tforcev.X() << " | " << */
+          /*                                                  "tforcev.Y() = " << tforcev.Y() << std::endl); */
           break;
         default:
             break;
@@ -411,7 +453,7 @@ void UsvThrust::SpinPropeller(size_t _i)
     effort = (this->thrusters[_i].currCmd /
               this->thrusters[_i].maxCmd) * kMaxEffort;
 
-  propeller->SetForce(0, effort);
+  propeller->SetForce(0, -effort);
 
   // Set position, velocity, and effort of joint from gazebo
   #if GAZEBO_MAJOR_VERSION >= 8
