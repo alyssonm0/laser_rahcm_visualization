@@ -5,7 +5,7 @@
   <xacro:macro name="base" params="name">
     <link name="base_link">
       <visual>
-      <origin xyz="0 0 -0.9" rpy="0 0 1.57"/>
+      <origin xyz="0 0 -0.75" rpy="0 0 1.57"/>
         <geometry>
           <mesh filename="package://laser_rahcm_visualization/meshes/chassi.dae" scale="0.0113 0.011 0.0125"/>
         </geometry>
