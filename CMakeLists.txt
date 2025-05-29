@@ -30,20 +30,6 @@ include_directories(
   ${rclcpp_INCLUDE_DIRS}
 )
 
-# add_executable(thrust
-#   src/usv_gazebo_thrust_plugin.cc
-# )
-
-# ament_target_dependencies(thrust
-#   rclcpp
-#   std_msgs
-#   gazebo
-#   gazebo_ros
-#   sensor_msgs
-#   Boost
-#   Eigen3
-# )
-
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
 add_library(usv_gazebo_thrust_plugin SHARED
@@ -63,11 +49,6 @@ target_link_libraries(usv_gazebo_thrust_plugin
   ${GAZEBO_LIBRARIES}
   ${rclcpp_LIBRARIES}
 )
-
-# install(TARGETS
-#   thrust
-#   DESTINATION lib/${PROJECT_NAME}
-# )
 
 install(TARGETS usv_gazebo_thrust_plugin
   ARCHIVE DESTINATION lib

@@ -364,23 +364,23 @@ void UsvThrust::Update()
       switch (this->thrusters[i].mappingType)
       {
         case 0:
-          tforcev.Y() = this->ScaleThrustCmd(this->thrusters[i].currCmd/
+          tforcev.X() = this->ScaleThrustCmd(this->thrusters[i].currCmd/
                                             this->thrusters[i].maxCmd,
                                             this->thrusters[i].maxCmd,
                                             this->thrusters[i].maxForceFwd,
                                             this->thrusters[i].maxForceRev);
 
-          /* /1* RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "tforcev.X() = " << tforcev.X() << " | " << *1/ */
-          /*                                                  "tforcev.Y() = " << tforcev.Y() << std::endl); */
+          RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "tforcev.X() = " << tforcev.X() << std::endl);
           break;
         case 1:
-          tforcev.Y() = this->GlfThrustCmd(this->thrusters[i].currCmd/
+          tforcev.X() = this->GlfThrustCmd(this->thrusters[i].currCmd/
                                           this->thrusters[i].maxCmd,
                                           this->thrusters[i].maxForceFwd,
                                           this->thrusters[i].maxForceRev);
-          
-          /* RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "tforcev.X() = " << tforcev.X() << " | " << */
-          /*                                                  "tforcev.Y() = " << tforcev.Y() << std::endl); */
+           
+          RCLCPP_INFO_STREAM(rclcpp::get_logger("thrust"), "tforcev.X() = " << tforcev.X() << std::endl);
+          break;
+
           break;
         default:
             break;
@@ -390,7 +390,7 @@ void UsvThrust::Update()
       this->thrusters[i].link->AddLinkForce(tforcev);
 
       // Spin the propellers
-      this->SpinPropeller(i);
+      /* this->SpinPropeller(i); */
     }
   }
 
@@ -453,7 +453,7 @@ void UsvThrust::SpinPropeller(size_t _i)
     effort = (this->thrusters[_i].currCmd /
               this->thrusters[_i].maxCmd) * kMaxEffort;
 
-  propeller->SetForce(0, -effort);
+  propeller->SetForce(0, effort);
 
   // Set position, velocity, and effort of joint from gazebo
   #if GAZEBO_MAJOR_VERSION >= 8
