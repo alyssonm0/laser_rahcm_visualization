@@ -38,13 +38,14 @@ Assim como no ROS 2, os [Tutoriais do Gazebo](https://classic.gazebosim.org/tuto
 ```bash
 cd ~/ros2_ws/src
 git clone https://github.com/alyssonm0/laser_rahcm_visualization.git
+git clone https://github.com/LASER-Robotics/laser_rahcm_simulation.git
 ```
 
 2. Compile o workspace:
 
 ```bash
 cd ~/ros2_ws
-colcon build --packages-select laser_rahcm_visualization
+colcon build 
 ```
 
 3. Fonte o setup:
@@ -67,15 +68,13 @@ ros2 launch laser_rahcm_visualization display.launch.py
 
 ## Simulação no **Gazebo**
 
-Para executar a simulação no Gazebo:
+Para executar a simulação no Gazebo, em um terminal:
 
+```bash
+ros2 launch laser_rahcm_simulation rahcm_simulation.launch.py
+```
+
+E em outro terminal:
 ```bash
 ros2 launch laser_rahcm_visualization gazebo.launch.py
 ```
-
-### 🔄 Comportamento do robô:
-
-- O robô **irá aparecer automaticamente em qualquer mundo que já esteja aberto** no Gazebo.
-- Se **nenhum mundo estiver aberto**, o launch irá carregar automaticamente o mundo padrão vazio do Gazebo (`empty.world`) e posicionar o robô lá.
-
----
